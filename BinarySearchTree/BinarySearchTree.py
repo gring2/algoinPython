@@ -3,6 +3,7 @@
 ## 하지만 successor가 대상 노드의 바로 다음 수이며, 자식이 1 이하라면
 ## 재 배열 연산을 하지 않아도 된다.
 
+
 class TreeNode:
     def __init__(self,key,val,left=None,right=None,parent=None):
         self.key = key
@@ -44,6 +45,50 @@ class TreeNode:
             self.leftChild.parent = self
         if self.hasRightChild():
             self.rightChild.parent = self
+    def findSuccessor(self):
+        ##maybe 필요 없는 분기
+      succ = None
+      # if self.hasRightChild():
+          ##오른쪽의 가장 작은 값이 현재 노드의 다음 값이 된다
+          ##현재 바이너리트리는 부모보다 항상 왼쪽이 작고 오른쪽이 크다
+      succ = self.rightChild.findMin()
+      # else:
+          # if self.parent:
+          #        if self.isLeftChild():
+          #            ##현재값의 부모가 현재값의 다음 값
+          #            succ = self.parent
+          #        else:
+          #
+          #            self.parent.rightChild = None
+          #            succ = self.parent.findSuccessor()
+          #            self.parent.rightChild = self
+      return succ
+
+    def findMin(self):
+      current = self
+      while current.hasLeftChild():
+          current = current.leftChild
+      return current
+
+    def spliceOut(self):
+       if self.isLeaf():
+           if self.isLeftChild():
+                  self.parent.leftChild = None
+           else:
+                  self.parent.rightChild = None
+       elif self.hasAnyChildren():
+           if self.hasLeftChild():
+                  if self.isLeftChild():
+                     self.parent.leftChild = self.leftChild
+                  else:
+                     self.parent.rightChild = self.leftChild
+                  self.leftChild.parent = self.parent
+           else:
+                  if self.isLeftChild():
+                     self.parent.leftChild = self.rightChild
+                  else:
+                     self.parent.rightChild = self.rightChild
+                  self.rightChild.parent = self.parent
 
 
 class BinarySearchTree:
@@ -126,45 +171,6 @@ class BinarySearchTree:
     def __delitem__(self,key):
        self.delete(key)
 
-    def spliceOut(self):
-       if self.isLeaf():
-           if self.isLeftChild():
-                  self.parent.leftChild = None
-           else:
-                  self.parent.rightChild = None
-       elif self.hasAnyChildren():
-           if self.hasLeftChild():
-                  if self.isLeftChild():
-                     self.parent.leftChild = self.leftChild
-                  else:
-                     self.parent.rightChild = self.leftChild
-                  self.leftChild.parent = self.parent
-           else:
-                  if self.isLeftChild():
-                     self.parent.leftChild = self.rightChild
-                  else:
-                     self.parent.rightChild = self.rightChild
-                  self.rightChild.parent = self.parent
-
-    def findSuccessor(self):
-      succ = None
-      if self.hasRightChild():
-          succ = self.rightChild.findMin()
-      else:
-          if self.parent:
-                 if self.isLeftChild():
-                     succ = self.parent
-                 else:
-                     self.parent.rightChild = None
-                     succ = self.parent.findSuccessor()
-                     self.parent.rightChild = self
-      return succ
-
-    def findMin(self):
-      current = self
-      while current.hasLeftChild():
-          current = current.leftChild
-      return current
 
     def remove(self,currentNode):
          if currentNode.isLeaf(): #leaf
@@ -208,10 +214,18 @@ class BinarySearchTree:
 
 
 mytree = BinarySearchTree()
-mytree[3]="red"
-mytree[4]="blue"
-mytree[6]="yellow"
-mytree[2]="at"
+mytree[17]="17"
+mytree[5]="5"
+mytree[35]="35"
+mytree[2]="2"
+mytree[11]="11"
+mytree[29]="29"
+mytree[38]="38"
+mytree[9]="9"
+mytree[16]="16"
+mytree[7]="7"
+mytree[8]="8"
+mytree[15]="15"
 
-print(mytree[6])
-print(mytree[2])
+mytree.delete(5)
+print(mytree.root.leftChild.payload)
