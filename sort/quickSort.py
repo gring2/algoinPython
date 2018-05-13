@@ -5,8 +5,10 @@ def quicksort(lst, low, high):
     nextSwap = low
     pivotIndex = low
 
-    ##반복문이 끝나면 해당 기준 값의 자리를 기준으로 왼쪽엔 작은 값 오른쪽은 큰 값이 된고 nextSwap은
-    # 해당 기준값 위치를 기준으로 오른쪽은 큰 값이기 때문에 기준값의 위치를 가리킨다.
+    ## 기준값 보다 비교값이 작을 경우에만 nextSwap을 이동시키기 때문에 비교값과 교체되는 nextSwap의 값은
+    ## 기준값보다 크거나 비교값 그 자신이 된다. 이것으로 인해 정렬의 정합성이 확보.
+    ##반복문이 끝나면 nextSwap의 오른쪽은 pivotValue보다 큰 값 왼쪽은 작은값이 위치하게됨.
+
 
     for i in range(low+1, high+1):
         if lst[i] < lst[pivotIndex]:
@@ -14,9 +16,10 @@ def quicksort(lst, low, high):
             lst[i], lst[nextSwap] = lst[nextSwap], lst[i]
 
     ##반복문 끝나면 해당 스왑 위치로 기준값을 이동
-
+    ##그렇기 때문에 nextSwap과 pivotValue를 스왑하게되면 pivotValue를 기준으로 값이 정렬된다.
     lst[nextSwap], lst[pivotIndex] = lst[pivotIndex], lst[nextSwap]
 
+    ## nextSwap은 기준값의 자기 위치를 가리킨다.
     ##기준값 왼쪽
     quicksort(lst, low, nextSwap-1)
     #기준값 오른쪽
